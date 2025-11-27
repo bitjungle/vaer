@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # PostgreSQL + PostGIS for staging
+  postgis-staging:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgis
+    container_name: stedsnavn-staging
+    environment:
+      POSTGRES_DB: stedsnavn_staging
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ../../postgis:/postgis:ro  # Read-only mount of PostGIS dump
+      - postgis_data:/var/lib/postgresql
+      - ./init-postgis.sh:/docker-entrypoint-initdb.d/init-postgis.sh:ro
+    networks:
+      - etl-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ETL runner (Python + GDAL)
+  etl-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.etl
+    container_name: stedsnavn-etl
+    depends_on:
+      postgis-staging:
+        condition: service_healthy
+    environment:
+      PGHOST: postgis-staging
+      PGPORT: 5432
+      PGDATABASE: stedsnavn_staging
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    volumes:
+      - ../../data:/data  # Output directory for places.db
+      - ../../postgis:/postgis:ro  # Read-only mount of PostGIS dump
+      - ./scripts:/scripts:ro
+    networks:
+      - etl-net
+    command: ["python3", "/scripts/run_etl.py"]
+
+volumes:
+  postgis_data:  # Temporary staging database
+
+networks:
+  etl-net:
+    driver: bridge

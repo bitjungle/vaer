@@ -1,0 +1,26 @@
+FROM python:3.13-slim
+
+# Install GDAL and PostGIS client tools
+RUN apt-get update && apt-get install -y \
+    gdal-bin \
+    libgdal-dev \
+    postgresql-client \
+    sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies (latest stable versions)
+RUN pip install --no-cache-dir \
+    psycopg2-binary \
+    python-dotenv
+
+# Set working directory
+WORKDIR /scripts
+
+# Copy ETL scripts
+COPY scripts/ /scripts/
+
+# Make scripts executable
+RUN chmod +x /scripts/*.py
+
+# Default command (overridden in docker-compose)
+CMD ["python3", "/scripts/run_etl.py"]

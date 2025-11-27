@@ -1,0 +1,58 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Tests
+tests/
+**/*.test.ts
+coverage/
+.nyc_output/
+
+# Development
+.git/
+.gitignore
+.env
+.env.*
+
+# Documentation
+docs/
+README*.md
+CLAUDE.md
+LICENSE
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Deployment (exclude these from the weather-mcp image)
+metno-proxy/
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# Scripts (except runtime data)
+scripts/
+
+# Temp files
+tmp/
+temp/
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,56 @@
+{
+  "name": "vaer",
+  "version": "0.1.0",
+  "description": "Vær - An opinionated Model Context Protocol (MCP) server that provides high-level, LLM-friendly weather tools backed by MET Norway's Weather API. Vær means 'weather' in Norwegian.",
+  "main": "dist/index.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --external zod --external zod-to-json-schema --external @modelcontextprotocol/sdk",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:unit": "vitest run src/",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest watch --config vitest.integration.config.ts",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "mcp",
+    "weather",
+    "vær",
+    "vaer",
+    "norway",
+    "met-norway",
+    "forecast",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.22.0",
+    "better-sqlite3": "^12.4.6",
+    "express": "^5.1.0",
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
+    "@vitest/coverage-v8": "^4.0.14",
+    "@vitest/ui": "^4.0.14",
+    "eslint": "^9.39.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  }
+}

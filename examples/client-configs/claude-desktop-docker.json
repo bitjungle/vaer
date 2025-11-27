@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "vaer-docker": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "vaer_vaer-network",
+        "-e",
+        "METNO_PROXY_BASE_URL=http://metno-proxy:80",
+        "vaer:latest"
+      ]
+    }
+  }
+}

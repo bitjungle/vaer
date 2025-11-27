@@ -1,0 +1,8 @@
+# Custom PostGIS image for ARM64 support - using Debian for PG18 PostGIS support
+FROM postgres:18
+
+# Install PostGIS and dependencies
+RUN apt-get update && apt-get install -y \
+    postgis \
+    postgresql-18-postgis-3 \
+    && rm -rf /var/lib/apt/lists/*

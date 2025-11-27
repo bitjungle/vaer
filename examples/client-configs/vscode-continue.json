@@ -1,0 +1,15 @@
+{
+  "models": [],
+  "mcpServers": [
+    {
+      "name": "vaer",
+      "command": "node",
+      "args": ["/path/to/vaer/dist/index.js"],
+      "env": {
+        "METNO_PROXY_BASE_URL": "http://localhost:8080",
+        "FROST_CLIENT_ID": "your-frost-client-id-optional",
+        "VAER_LOG_LEVEL": "info"
+      }
+    }
+  ]
+}
