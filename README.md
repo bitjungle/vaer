@@ -125,30 +125,35 @@ MCP Client (ChatGPT, IDE, custom app)
 
 The MCP server is configured via environment variables:
 
-### Currently Used (Phases 0-8)
+### Required
 
-* `METNO_PROXY_BASE_URL` **(required)**
+* `METNO_PROXY_BASE_URL`
   Base URL to the Nginx proxy (e.g. `http://localhost:8080` for dev, `http://metno-proxy:80` for Docker).
 
-* `METNO_TIMEOUT_MS` (optional)
-  Upstream HTTP timeout to the proxy (default: 5000ms).
+### Proxy & Timeouts
 
-* `FROST_CLIENT_ID` (optional)
-  Client ID for Frost API observations (get from https://frost.met.no/auth/requestCredentials.html).
+* `METNO_TIMEOUT_MS` — Upstream HTTP timeout (default: `5000`ms)
+* `METNO_CONNECT_TIMEOUT_MS` — Connection timeout (default: `2000`ms)
 
-* `VAER_LOG_LEVEL` (optional)
-  Logging level: `info`, `debug`, `warn` (default: `info`).
+### Frost API (Observations)
 
-* `VAER_PORT` (optional)
-  Port for HTTP transport. If not set, server uses stdio transport (default).
+* `FROST_CLIENT_ID` — Client ID for Frost API (get from https://frost.met.no/auth/requestCredentials.html)
+* `FROST_BASE_URL` — Override Frost API base URL (default: `https://frost.met.no`)
+* `FROST_TIMEOUT_MS` — Frost API timeout (default: `10000`ms)
 
-### Future (Phase 9+: Authentication)
+### Server
 
-* `VAER_AUTH_MODE`
-  Authentication mode: `none`, `api-key`, `jwt`.
+* `VAER_PORT` — Port for HTTP transport. If not set, server uses stdio transport.
+* `VAER_LOG_LEVEL` — Logging level: `debug`, `info`, `warn`, `error` (default: `info`)
 
-* `VAER_API_KEY`
-  API key value if `api-key` auth is enabled.
+### Authentication
+
+* `VAER_AUTH_MODE` — Authentication mode: `none`, `api-key`, `jwt` (default: `none`)
+* `VAER_API_KEY` — API key value (required if `VAER_AUTH_MODE=api-key`)
+
+### Places Database
+
+* `PLACES_DB_PATH` — Path to SQLite places database (default: `./data/places.db`)
 
 ---
 
@@ -200,7 +205,7 @@ The MCP server is configured via environment variables:
 ├─ src/
 │  ├─ index.ts                # MCP server entry point
 │  ├─ config/                 # Configuration management
-│  ├─ transport/              # stdio transport (HTTP: Phase 8)
+│  ├─ transport/              # stdio + HTTP transports
 │  ├─ tools/                  # 7 MCP tools (weather.* + places.*)
 │  ├─ resources/              # MCP resources (license, products, units)
 │  ├─ prompts/                # 3 MCP prompts
@@ -220,7 +225,7 @@ The MCP server is configured via environment variables:
 │   ├─ V1_HISTORY.md          # Implementation history
 │   ├─ V2_ROADMAP.md          # Future roadmap
 │   └─ SETUP.md               # Setup & development guide
-├─ docker-compose.yml         # Full stack orchestration (Phase 11)
+├─ docker-compose.yml         # Full stack orchestration
 ├─ Makefile
 ├─ package.json
 ├─ CLAUDE.md                  # AI assistant guidance
@@ -275,7 +280,7 @@ METNO_PROXY_BASE_URL=http://localhost:8080 npx @modelcontextprotocol/inspector n
 
 ### Testing HTTP Transport
 
-To test the HTTP transport (Phase 8):
+To test the HTTP transport:
 
 ```bash
 # Start server with HTTP transport
@@ -298,7 +303,7 @@ The HTTP transport:
 
 ### Testing Proxy Integration
 
-To test the proxy integration layer (Phase 2):
+To test the proxy integration layer:
 
 ```bash
 METNO_PROXY_BASE_URL=http://localhost:8080 npx tsx tests/test-proxy-integration.ts
@@ -312,7 +317,7 @@ This validates:
 
 ### Testing Location Forecast Tool
 
-To test the location forecast tool (Phase 3):
+To test the location forecast tool:
 
 ```bash
 METNO_PROXY_BASE_URL=http://localhost:8080 npx tsx tests/test-location-forecast.ts
@@ -542,29 +547,6 @@ For production deployments, see:
   - Security considerations
   - Monitoring & operations
   - Troubleshooting
-
----
-
-## Status
-
-🚀 **Production-Ready** - All planned phases complete:
-
-* ✅ Concept and architecture
-* ✅ High-level tool, resource, and prompt design
-* ✅ Phase 0: Project bootstrap
-* ✅ Phase 1: Core infrastructure (MCP server with stdio transport)
-* ✅ Phase 2: Proxy integration layer (HTTP client, cache parsing, error handling)
-* ✅ Phase 3: Location forecast tool (weather.get_location_forecast)
-* ✅ Phase 4: Data tools (5 tools: forecast, nowcast, air quality, marine, observations)
-* ✅ Phase 5: Service tools (2 opinionated tools: activity planning, marine risk)
-* ✅ Phase 6: Resources & prompts (3 resources, 3 prompts)
-* ✅ Phase 7: Places module (Norway place name resolution with ETL pipeline)
-* ✅ Phase 8: HTTP transport (StreamableHTTPServerTransport with Express)
-* ✅ Phase 9: Observability & metrics (logging, Prometheus metrics, /metrics endpoint)
-* ✅ Phase 10: Testing & Quality (82 unit tests, 97% coverage, 17 integration tests)
-* ✅ Phase 11: Docker & Deployment (Dockerfile, docker-compose, client configs, deployment guide)
-
-See `docs/V1_HISTORY.md` for implementation history and architectural decisions.
 
 ---
 
