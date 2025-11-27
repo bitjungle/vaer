@@ -43,3 +43,6 @@ CLAUDE.md
 data/*.db-shm
 data/*.db-wal
 data/*.csv
+
+# Large PostGIS SQL dumps (users must download separately)
+postgis/*.sql
