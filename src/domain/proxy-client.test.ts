@@ -55,7 +55,7 @@ describe('ProxyClient', () => {
 
   describe('Constructor', () => {
     it('should strip trailing slash from baseUrl', () => {
-      const clientWithSlash = new ProxyClient('http://localhost:8080/', 5000);
+      new ProxyClient('http://localhost:8080/', 5000);
       expect(logger.info).toHaveBeenCalledWith(
         'ProxyClient initialized',
         expect.objectContaining({
@@ -75,7 +75,7 @@ describe('ProxyClient', () => {
     });
 
     it('should use default timeout of 5000ms if not provided', () => {
-      const defaultClient = new ProxyClient('http://localhost:8080');
+      new ProxyClient('http://localhost:8080');
       expect(logger.info).toHaveBeenCalledWith(
         'ProxyClient initialized',
         expect.objectContaining({
@@ -185,7 +185,7 @@ describe('ProxyClient', () => {
     it('should pass AbortSignal for timeout control', async () => {
       // Instead of testing actual timeout behavior (which causes race conditions
       // with fake timers), verify that AbortSignal is passed to fetch
-      let receivedSignal: AbortSignal | undefined;
+      let receivedSignal: AbortSignal | null | undefined;
 
       mockFetch.mockImplementation((_url: string, options?: RequestInit) => {
         receivedSignal = options?.signal;

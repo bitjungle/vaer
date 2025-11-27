@@ -49,8 +49,10 @@ export function wrapTool(toolName: string, handler: ToolHandler): ToolHandler {
           const outcome: 'success' | 'error' = result.isError ? 'error' : 'success';
 
           // Extract error code if present
-          const errorCode = result.isError && result.content[0]?.text
-            ? extractErrorCode(result.content[0].text)
+          const firstContent = result.content[0];
+          const errorText = firstContent && 'text' in firstContent ? firstContent.text : undefined;
+          const errorCode = result.isError && errorText
+            ? extractErrorCode(errorText)
             : undefined;
 
           // Log tool end

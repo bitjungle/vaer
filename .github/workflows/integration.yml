@@ -1,0 +1,49 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start services
+        run: docker compose up -d --build
+
+      - name: Wait for proxy health
+        run: |
+          for i in {1..30}; do
+            curl -sf http://localhost:8080/healthz && exit 0
+            sleep 1
+          done
+          echo "Proxy health check failed"
+          exit 1
+
+      - name: Wait for vaer health
+        run: |
+          for i in {1..30}; do
+            curl -sf http://localhost:3000/health && exit 0
+            sleep 1
+          done
+          echo "Vaer health check failed"
+          exit 1
+
+      - name: Integration tests
+        run: METNO_PROXY_BASE_URL=http://localhost:8080 npm run test:integration
+
+      - name: Stop services
+        if: always()
+        run: docker compose down

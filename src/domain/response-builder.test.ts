@@ -7,6 +7,17 @@ import { describe, it, expect } from 'vitest';
 import { buildToolResponse, buildErrorResponse } from './response-builder.js';
 import type { WeatherError } from './types.js';
 
+// Helper to safely get text from content item
+function getTextContent(
+  content: { type: string; text?: string }[]
+): string | undefined {
+  const item = content[0];
+  if (item && item.type === 'text' && 'text' in item) {
+    return item.text;
+  }
+  return undefined;
+}
+
 describe('buildToolResponse', () => {
   it('should build response with text and structured content', () => {
     const structuredContent = {
@@ -32,14 +43,14 @@ describe('buildToolResponse', () => {
     const result = buildToolResponse({}, 'Empty response');
 
     expect(result.structuredContent).toEqual({});
-    expect(result.content[0].text).toBe('Empty response');
+    expect(getTextContent(result.content)).toBe('Empty response');
   });
 
   it('should handle multi-line text summary', () => {
     const textSummary = 'Line 1\nLine 2\nLine 3';
     const result = buildToolResponse({ data: 'test' }, textSummary);
 
-    expect(result.content[0].text).toBe(textSummary);
+    expect(getTextContent(result.content)).toBe(textSummary);
   });
 });
 
@@ -79,7 +90,7 @@ describe('buildErrorResponse', () => {
 
     const result = buildErrorResponse(error);
 
-    expect(result.content[0].text).toBe(
+    expect(getTextContent(result.content)).toBe(
       'Rate limit exceeded Retry after 60 seconds.'
     );
     expect(result.isError).toBe(true);
@@ -97,7 +108,7 @@ describe('buildErrorResponse', () => {
 
     const result = buildErrorResponse(error);
 
-    expect(result.content[0].text).toBe('Service temporarily unavailable');
+    expect(getTextContent(result.content)).toBe('Service temporarily unavailable');
   });
 
   it('should handle error without details', () => {
@@ -109,7 +120,7 @@ describe('buildErrorResponse', () => {
 
     const result = buildErrorResponse(error);
 
-    expect(result.content[0].text).toBe('An unexpected error occurred');
-    expect(result.structuredContent.error).toEqual(error);
+    expect(getTextContent(result.content)).toBe('An unexpected error occurred');
+    expect(result.structuredContent?.error).toEqual(error);
   });
 });

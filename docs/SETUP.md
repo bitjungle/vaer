@@ -23,7 +23,7 @@ This guide covers how to get the Vær server and supporting infrastructure runni
    - Download: https://www.docker.com/products/docker-desktop
    - Verify: `docker --version && docker compose version`
 
-2. **Node.js 20+ LTS** (for local development)
+2. **Node.js 24+ LTS** (for local development)
    - Download: https://nodejs.org/
    - Verify: `node --version`
 

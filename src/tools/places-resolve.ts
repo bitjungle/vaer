@@ -2,11 +2,11 @@
  * places.resolve_name tool handler
  */
 
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { logger } from '../domain/logger.js';
 import { PlacesDB } from '../places/db.js';
 import { resolveName } from '../places/matcher.js';
 import type { PlaceResolveInput, PlaceResolveOutput } from '../places/schemas.js';
-import type { ToolResponse } from '../domain/types.js';
 
 /**
  * Generate human-readable summary for place resolution results
@@ -14,7 +14,7 @@ import type { ToolResponse } from '../domain/types.js';
 function generateSummary(
   query: string,
   matches: PlaceResolveOutput['matches'],
-  language: string
+  _language: string
 ): string {
   if (matches.length === 0) {
     return `No Norwegian places found matching "${query}". Try a different spelling or nearby location.`;
@@ -65,7 +65,7 @@ function generateSummary(
 export async function handlePlaceResolve(
   input: PlaceResolveInput,
   placesDB: PlacesDB
-): Promise<ToolResponse> {
+): Promise<CallToolResult> {
   logger.info('Handling places.resolve_name', {
     query: input.query,
     limit: input.limit,

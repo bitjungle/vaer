@@ -104,7 +104,7 @@ function applyFilters(
  */
 function assignConfidence(
   candidates: PlaceCandidate[],
-  query: string
+  _query: string
 ): PlaceMatch[] {
   return candidates.map((candidate, index) => {
     let confidence = 0.0;

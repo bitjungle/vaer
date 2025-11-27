@@ -18,10 +18,6 @@ import {
   handleLocationForecast,
   type LocationForecastInput,
 } from './location-forecast.js';
-import {
-  handleNowcast,
-  type NowcastInput,
-} from './nowcast.js';
 
 /**
  * Activity types with predefined thresholds

@@ -97,7 +97,7 @@ export class ProxyClient {
         url,
         response.status,
         latency,
-        cache.status as 'HIT' | 'MISS' | 'EXPIRED' | undefined,
+        cache.status,
         contextRequestId || requestId
       );
 

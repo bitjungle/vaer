@@ -1,4 +1,4 @@
-# Vær (MET Norway)
+# VÆR - Model Context Protocol Weather+Place Server
 
 An **opinionated Model Context Protocol (MCP) server** that provides high-level, LLM-friendly weather tools backed by **MET Norway’s Weather API (`api.met.no`)**, via an internal `metno-proxy` (Nginx reverse proxy + cache).
 
@@ -97,7 +97,7 @@ MCP Client (ChatGPT, IDE, custom app)
 
 * **Runtime**
 
-  * Node.js 20+ (LTS or newer)
+  * Node.js 24+ (LTS or newer)
 
 * **MET proxy**
 
@@ -233,7 +233,7 @@ The MCP server is configured via environment variables:
 ## Quick Start (Development)
 
 ### Prerequisites
-- Node.js 20+ LTS
+- Node.js 24+ LTS
 - Docker Desktop (includes Docker Compose)
 
 ### Running the Full Stack
@@ -570,6 +570,4 @@ See `docs/V1_HISTORY.md` for implementation history and architectural decisions.
 
 ## License
 
-TODO – choose and add a license file.
-
-Ensure that any use of MET Norway data follows their terms of use and attribution requirements.
+VÆR is open-source software licensed under the MIT License. However, the author respectfully requests that it not be used for military, warfare, or surveillance applications.

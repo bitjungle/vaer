@@ -18,7 +18,7 @@ The Vær Server v1 was implemented over 11 phases, delivering a production-ready
 
 ### Phase 0: Project Bootstrap
 **Deliverables:**
-- TypeScript build system with Node.js 20+
+- TypeScript build system with Node.js 24+
 - ESLint configuration with TypeScript support
 - Project directory structure
 - Dependencies: `@modelcontextprotocol/sdk`, `zod`

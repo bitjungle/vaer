@@ -9,7 +9,7 @@ import { FrostClient } from '../domain/frost-client.js';
 import { buildToolResponse, buildErrorResponse } from '../domain/response-builder.js';
 import { createWeatherError } from '../domain/error-handler.js';
 import { logger } from '../domain/logger.js';
-import { CoordinateSchema, LanguageSchema } from '../domain/schemas/common.js';
+import { LanguageSchema } from '../domain/schemas/common.js';
 
 /**
  * Location specification (either coordinates with radius OR station ID)

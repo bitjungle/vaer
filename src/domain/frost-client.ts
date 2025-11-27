@@ -8,7 +8,7 @@
 import { randomUUID } from 'crypto';
 import { logger } from './logger.js';
 import { handleHttpError, createWeatherError } from './error-handler.js';
-import type { WeatherError, CacheMetadata } from './types.js';
+import type { CacheMetadata } from './types.js';
 
 /**
  * Frost API response wrapper

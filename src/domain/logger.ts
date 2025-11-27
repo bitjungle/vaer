@@ -146,7 +146,7 @@ class Logger {
     upstreamUrl: string,
     upstreamStatus: number,
     latencyMs: number,
-    cacheStatus?: 'HIT' | 'MISS' | 'EXPIRED',
+    cacheStatus?: 'HIT' | 'MISS' | 'EXPIRED' | 'BYPASS',
     requestId?: string
   ): void {
     this.debug('Upstream API call', {

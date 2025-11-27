@@ -9,7 +9,7 @@ import { ProxyClient } from '../domain/proxy-client.js';
 import { buildToolResponse, buildErrorResponse } from '../domain/response-builder.js';
 import { createWeatherError } from '../domain/error-handler.js';
 import { logger } from '../domain/logger.js';
-import { CoordinateSchema, TimeWindowSchema, LanguageSchema } from '../domain/schemas/common.js';
+import { TimeWindowSchema, LanguageSchema } from '../domain/schemas/common.js';
 import {
   handleMarineConditions,
   type MarineConditionsInput,
@@ -112,16 +112,6 @@ function riskToNumeric(risk: RiskLevelType): number {
 }
 
 /**
- * Map numeric value back to risk level
- */
-function numericToRisk(value: number): RiskLevelType {
-  if (value >= 3) return 'extreme';
-  if (value >= 2) return 'high';
-  if (value >= 1) return 'moderate';
-  return 'low';
-}
-
-/**
  * Aggregate risk across route
  */
 function aggregateTripRisk(waypointAssessments: WaypointAssessment[]): TripRiskLevelType {
@@ -162,7 +152,7 @@ function aggregateTripRisk(waypointAssessments: WaypointAssessment[]): TripRiskL
 function generateRecommendation(
   tripRisk: TripRiskLevelType,
   vesselType: VesselTypeType,
-  hotspots: RiskHotspot[]
+  _hotspots: RiskHotspot[]
 ): string {
   switch (tripRisk) {
     case 'safe':

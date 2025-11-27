@@ -887,7 +887,7 @@ Align these with MCP's general error semantics (JSON-RPC error codes plus additi
 ### 15.1 Runtime Choices
 
 * Language: **TypeScript** with `@modelcontextprotocol/sdk` + `zod`.([GitHub][4])
-* Node.js: **Node 20+ LTS** (aligning with current MCP server templates).([GitHub][17])
+* Node.js: **Node 24+ LTS** (aligning with current MCP server templates).([GitHub][17])
 
 ### 15.2 Environment Configuration
 

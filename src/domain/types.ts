@@ -35,6 +35,8 @@ export interface CacheMetadata {
   cached: boolean;
   /** Age of cached response in seconds (undefined if not cached) */
   ageSeconds?: number;
+  /** Raw cache status from X-Proxy-Cache header */
+  status?: 'HIT' | 'MISS' | 'EXPIRED' | 'BYPASS';
 }
 
 /**

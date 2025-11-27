@@ -3,7 +3,7 @@
 # ============================================================================
 # Build Stage: Compile TypeScript and install dependencies
 # ============================================================================
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Install build dependencies for native modules (better-sqlite3)
 RUN apk add --no-cache python3 make g++
@@ -26,7 +26,7 @@ RUN npm run build
 # ============================================================================
 # Production Stage: Minimal runtime image
 # ============================================================================
-FROM node:20-alpine AS production
+FROM node:24-alpine AS production
 
 # Install runtime dependencies for native modules
 RUN apk add --no-cache python3 make g++
