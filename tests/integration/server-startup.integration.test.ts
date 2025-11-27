@@ -11,17 +11,11 @@ import { config } from './setup.js';
 
 describe('MCP Server Startup', () => {
   it('should start successfully via stdio transport', async () => {
-    const { output, wasKilled } = await spawnServer();
+    const { output } = await spawnServer();
 
-    // Server was killed after startup (expected behavior)
-    expect(wasKilled).toBe(true);
-
-    // Should contain successful startup message OR graceful degradation message
-    const startedSuccessfully =
-      output.includes('MCP server connected via stdio transport') ||
-      output.includes('PlacesDB not available');
-
-    expect(startedSuccessfully).toBe(true);
+    // Should contain successful startup message
+    // The server logs "MCP server connected via stdio transport" on successful start
+    expect(output).toContain('MCP server connected via stdio transport');
   }, 15000); // 15s timeout for server startup
 
   it('should gracefully handle missing PlacesDB', async () => {
@@ -49,7 +43,7 @@ describe('MCP Server Startup', () => {
 /**
  * Helper function to spawn the MCP server process and capture output
  */
-async function spawnServer(): Promise<{ output: string; wasKilled: boolean }> {
+async function spawnServer(): Promise<{ output: string }> {
   return new Promise((resolve) => {
     const server = spawn('node', ['dist/index.js'], {
       env: {
@@ -59,7 +53,6 @@ async function spawnServer(): Promise<{ output: string; wasKilled: boolean }> {
     });
 
     let output = '';
-    let wasKilled = false;
 
     server.stdout.on('data', (data) => {
       output += data.toString();
@@ -70,13 +63,13 @@ async function spawnServer(): Promise<{ output: string; wasKilled: boolean }> {
     });
 
     // Give server 2 seconds to start up, then kill it
-    setTimeout(() => {
-      wasKilled = true;
+    const timeout = setTimeout(() => {
       server.kill();
     }, 2000);
 
     server.on('close', () => {
-      resolve({ output, wasKilled });
+      clearTimeout(timeout);
+      resolve({ output });
     });
   });
 }
