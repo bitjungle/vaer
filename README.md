@@ -107,24 +107,12 @@ MCP Client (ChatGPT, IDE, custom app)
     * Sets a compliant `User-Agent`
     * Optionally enables caching & rate limiting
 
-* **Docker Compose v2** (for Docker deployments and ETL)
+* **Docker + Compose v2** (for Docker deployments and ETL)
 
-  Docker Desktop (macOS/Windows) includes Docker Compose v2 (`docker compose`).
-  On Linux servers using system packages (`apt install docker.io`), install Compose v2 separately:
+  * **macOS/Windows**: Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes everything)
+  * **Linux servers**: Install Docker CE from Docker's official repository — see **[README-docker-install.md](README-docker-install.md)** for step-by-step instructions
 
-  ```bash
-  # Install Docker Compose v2 standalone binary
-  sudo curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 \
-    -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-
-  # Create plugin symlink so 'docker compose' works
-  sudo mkdir -p /usr/local/lib/docker/cli-plugins
-  sudo ln -sf /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
-
-  # Verify
-  docker compose version
-  ```
+  Ubuntu's default `docker.io` package lacks Compose v2 and Buildx. Use Docker's official repo for a complete installation.
 
 * **Places Database** (optional, for Norway place name resolution)
 
