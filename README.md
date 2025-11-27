@@ -107,9 +107,27 @@ MCP Client (ChatGPT, IDE, custom app)
     * Sets a compliant `User-Agent`
     * Optionally enables caching & rate limiting
 
+* **Docker Compose v2** (for Docker deployments and ETL)
+
+  Docker Desktop (macOS/Windows) includes Docker Compose v2 (`docker compose`).
+  On Linux servers using system packages (`apt install docker.io`), install Compose v2 separately:
+
+  ```bash
+  # Install Docker Compose v2 standalone binary
+  sudo curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 \
+    -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+
+  # Create plugin symlink so 'docker compose' works
+  sudo mkdir -p /usr/local/lib/docker/cli-plugins
+  sudo ln -sf /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
+
+  # Verify
+  docker compose version
+  ```
+
 * **Places Database** (optional, for Norway place name resolution)
 
-  * Docker and Docker Compose (for one-time ETL pipeline)
   * Kartverket Stedsnavn PostGIS dump: `postgis/Basisdata_0000_Norge_25833_Stedsnavn_PostGIS.sql`
   * ETL creates `data/places.db` (28,115 places, 6.09 MB)
   * Server runs gracefully without places.db (tools disabled with warning)
@@ -239,7 +257,7 @@ The MCP server is configured via environment variables:
 
 ### Prerequisites
 - Node.js 24+ LTS
-- Docker Desktop (includes Docker Compose)
+- Docker Desktop (macOS/Windows) or Docker + Compose v2 (Linux — see [Requirements](#requirements))
 
 ### Running the Full Stack
 
