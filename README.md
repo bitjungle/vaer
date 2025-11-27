@@ -1,5 +1,7 @@
 # VÆR - Model Context Protocol Weather+Place Server
 
+<img src="img/vaer_logo.png" alt="Vær logo" width="120" align="right" />
+
 An **opinionated Model Context Protocol (MCP) server** that provides high-level, LLM-friendly weather tools backed by **MET Norway’s Weather API (`api.met.no`)**, via an internal `metno-proxy` (Nginx reverse proxy + cache).
 
 This server is designed to be used by MCP-compatible clients (e.g. AI assistants, IDEs, custom apps) to get structured weather information and simple “weather services” like activity planning and marine trip risk assessments.
