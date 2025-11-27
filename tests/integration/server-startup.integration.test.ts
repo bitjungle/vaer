@@ -11,10 +11,10 @@ import { config } from './setup.js';
 
 describe('MCP Server Startup', () => {
   it('should start successfully via stdio transport', async () => {
-    const { output, exitCode } = await spawnServer();
+    const { output, wasKilled } = await spawnServer();
 
-    // Server should start without errors
-    expect(exitCode).toBe(0);
+    // Server was killed after startup (expected behavior)
+    expect(wasKilled).toBe(true);
 
     // Should contain successful startup message OR graceful degradation message
     const startedSuccessfully =
@@ -49,7 +49,7 @@ describe('MCP Server Startup', () => {
 /**
  * Helper function to spawn the MCP server process and capture output
  */
-async function spawnServer(): Promise<{ output: string; exitCode: number }> {
+async function spawnServer(): Promise<{ output: string; wasKilled: boolean }> {
   return new Promise((resolve) => {
     const server = spawn('node', ['dist/index.js'], {
       env: {
@@ -59,6 +59,7 @@ async function spawnServer(): Promise<{ output: string; exitCode: number }> {
     });
 
     let output = '';
+    let wasKilled = false;
 
     server.stdout.on('data', (data) => {
       output += data.toString();
@@ -70,11 +71,12 @@ async function spawnServer(): Promise<{ output: string; exitCode: number }> {
 
     // Give server 2 seconds to start up, then kill it
     setTimeout(() => {
+      wasKilled = true;
       server.kill();
     }, 2000);
 
-    server.on('close', (code) => {
-      resolve({ output, exitCode: code || 0 });
+    server.on('close', () => {
+      resolve({ output, wasKilled });
     });
   });
 }
