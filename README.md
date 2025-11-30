@@ -8,6 +8,12 @@ This server is designed to be used by MCP-compatible clients (e.g. AI assistants
 
 ---
 
+## Example Usage from a MCP Client 
+
+![Vær in Claude Desktop](img/demo_01.png)
+
+---
+
 ## Getting Started
 
 ```bash
