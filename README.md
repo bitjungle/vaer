@@ -31,16 +31,16 @@ That's it — you now have a running MCP server. See [Documentation](#documentat
 ## Features
 
 - **Opinionated weather tools**
-  - `weather.get_location_forecast` – normalized hourly forecast
-  - `weather.get_nowcast` – short-term precipitation and conditions
-  - `weather.get_air_quality` – air quality & AQI for Norwegian locations
-  - `weather.get_recent_observations` – recent observed weather (Frost)
-  - `weather.get_marine_conditions` – coastal/marine summary
-  - `weather.assess_outdoor_activity_window` – "when is it nice outside?"
-  - `weather.assess_marine_trip_risk` – simple marine risk evaluation
+  - `weather_get_location_forecast` – normalized hourly forecast
+  - `weather_get_nowcast` – short-term precipitation and conditions
+  - `weather_get_air_quality` – air quality & AQI for Norwegian locations
+  - `weather_get_recent_observations` – recent observed weather (Frost)
+  - `weather_get_marine_conditions` – coastal/marine summary
+  - `weather_assess_outdoor_activity_window` – "when is it nice outside?"
+  - `weather_assess_marine_trip_risk` – simple marine risk evaluation
 
 - **Norwegian place name resolution** (28,115 places)
-  - `places.resolve_name` – resolve Norwegian place names to coordinates
+  - `places_resolve_name` – resolve Norwegian place names to coordinates
   - Powered by Kartverket Stedsnavn (official Norwegian place names register)
   - Supports queries like "What's the weather in Bergen?"
   - Intelligent matching with FTS5 full-text search, confidence scoring and disambiguation
@@ -181,18 +181,18 @@ The MCP server is configured via environment variables:
    The client can now call any of the 7 implemented tools:
 
    **Data Tools:**
-   * `weather.get_location_forecast` – Global weather forecasts
-   * `weather.get_nowcast` – Nordic 2-hour precipitation
-   * `weather.get_air_quality` – Norway air quality & AQI
-   * `weather.get_marine_conditions` – Coastal marine weather
-   * `weather.get_recent_observations` – Observed weather (Frost API)
+   * `weather_get_location_forecast` – Global weather forecasts
+   * `weather_get_nowcast` – Nordic 2-hour precipitation
+   * `weather_get_air_quality` – Norway air quality & AQI
+   * `weather_get_marine_conditions` – Coastal marine weather
+   * `weather_get_recent_observations` – Observed weather (Frost API)
 
    **Service Tools:**
-   * `weather.assess_outdoor_activity_window` – Activity planning with comfort scoring
-   * `weather.assess_marine_trip_risk` – Marine trip risk assessment
+   * `weather_assess_outdoor_activity_window` – Activity planning with comfort scoring
+   * `weather_assess_marine_trip_risk` – Marine trip risk assessment
 
    **Places Tool:**
-   * `places.resolve_name` – Resolve Norwegian place names to coordinates
+   * `places_resolve_name` – Resolve Norwegian place names to coordinates
 
 ---
 
@@ -202,7 +202,7 @@ The MCP server is configured via environment variables:
 .
 ├─ src/                       # TypeScript source code
 │  ├─ index.ts               # MCP server entry point
-│  ├─ tools/                 # 8 MCP tools (weather.* + places.*)
+│  ├─ tools/                 # 8 MCP tools (weather_* + places_*)
 │  ├─ resources/             # MCP resources
 │  ├─ prompts/               # MCP prompts
 │  ├─ domain/                # Shared utilities

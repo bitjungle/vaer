@@ -196,20 +196,20 @@ export function createMcpServer(config: ServerConfig): McpServer {
     placesDB = new PlacesDB(config.placesDbPath);
     logger.info('PlacesDB initialized successfully');
   } catch (error) {
-    logger.warn('PlacesDB not available - places.resolve_name tool will be disabled', {
+    logger.warn('PlacesDB not available - places_resolve_name tool will be disabled', {
       error,
     });
   }
 
   // Register weather data tools
   server.registerTool(
-    'weather.get_location_forecast',
+    'weather_get_location_forecast',
     {
       description:
         'Get weather forecast for any location on Earth using MET Norway Locationforecast API. Returns hourly weather data including temperature, wind, precipitation, and conditions.',
       inputSchema: LocationForecastInputSchema,
     },
-    wrapTool('weather.get_location_forecast', async (args: unknown) => {
+    wrapTool('weather_get_location_forecast', async (args: unknown) => {
       const input = LocationForecastInputSchema.parse(args);
       return handleLocationForecast(input, proxyClient);
     })
@@ -218,13 +218,13 @@ export function createMcpServer(config: ServerConfig): McpServer {
   logger.debug('Registered location forecast tool');
 
   server.registerTool(
-    'weather.get_nowcast',
+    'weather_get_nowcast',
     {
       description:
         'Get 2-hour short-term precipitation forecast for Nordic region using MET Norway Nowcast API. Optimized for answering "will it rain in the next 2 hours?"',
       inputSchema: NowcastInputSchema,
     },
-    wrapTool('weather.get_nowcast', async (args: unknown) => {
+    wrapTool('weather_get_nowcast', async (args: unknown) => {
       const input = NowcastInputSchema.parse(args);
       return handleNowcast(input, proxyClient);
     })
@@ -233,13 +233,13 @@ export function createMcpServer(config: ServerConfig): McpServer {
   logger.debug('Registered nowcast tool');
 
   server.registerTool(
-    'weather.get_air_quality',
+    'weather_get_air_quality',
     {
       description:
         'Get air quality forecast and AQI (Air Quality Index) for Norwegian locations using MET Norway Air Quality API. Includes pollutant levels (PM2.5, PM10, NO2, O3) and health advice.',
       inputSchema: AirQualityInputSchema,
     },
-    wrapTool('weather.get_air_quality', async (args: unknown) => {
+    wrapTool('weather_get_air_quality', async (args: unknown) => {
       const input = AirQualityInputSchema.parse(args);
       return handleAirQuality(input, proxyClient);
     })
@@ -248,13 +248,13 @@ export function createMcpServer(config: ServerConfig): McpServer {
   logger.debug('Registered air quality tool');
 
   server.registerTool(
-    'weather.get_marine_conditions',
+    'weather_get_marine_conditions',
     {
       description:
         'Get marine weather conditions for coastal Norwegian locations using MET Norway Oceanforecast API. Returns wave height, water temperature, currents, and risk assessment for different vessel types.',
       inputSchema: MarineConditionsInputSchema,
     },
-    wrapTool('weather.get_marine_conditions', async (args: unknown) => {
+    wrapTool('weather_get_marine_conditions', async (args: unknown) => {
       const input = MarineConditionsInputSchema.parse(args);
       return handleMarineConditions(input, proxyClient);
     })
@@ -263,13 +263,13 @@ export function createMcpServer(config: ServerConfig): McpServer {
   logger.debug('Registered marine conditions tool');
 
   server.registerTool(
-    'weather.get_recent_observations',
+    'weather_get_recent_observations',
     {
       description:
         'Get recent observed weather data from MET Norway Frost API. Returns actual measurements from weather stations including temperature, wind, precipitation, and more. Supports both station ID and coordinate-based queries.',
       inputSchema: RecentObservationsInputSchema,
     },
-    wrapTool('weather.get_recent_observations', async (args: unknown) => {
+    wrapTool('weather_get_recent_observations', async (args: unknown) => {
       const input = RecentObservationsInputSchema.parse(args);
       return handleRecentObservations(input, frostClient);
     })
@@ -279,13 +279,13 @@ export function createMcpServer(config: ServerConfig): McpServer {
 
   // Register service tools
   server.registerTool(
-    'weather.assess_outdoor_activity_window',
+    'weather_assess_outdoor_activity_window',
     {
       description:
         'Assess weather conditions for outdoor activities. Scores each hour based on activity-specific thresholds (temperature, wind, precipitation) and identifies best time windows. Supports running, cycling, hiking, kids playground, commuting, or custom preferences.',
       inputSchema: AssessOutdoorActivityInputSchema,
     },
-    wrapTool('weather.assess_outdoor_activity_window', async (args: unknown) => {
+    wrapTool('weather_assess_outdoor_activity_window', async (args: unknown) => {
       const input = AssessOutdoorActivityInputSchema.parse(args);
       return handleAssessOutdoorActivity(input, proxyClient);
     })
@@ -294,13 +294,13 @@ export function createMcpServer(config: ServerConfig): McpServer {
   logger.debug('Registered assess outdoor activity tool');
 
   server.registerTool(
-    'weather.assess_marine_trip_risk',
+    'weather_assess_marine_trip_risk',
     {
       description:
         'Assess risk for marine trips along a route. Evaluates marine conditions at multiple waypoints, identifies risk hotspots, and provides overall trip risk assessment with recommendations. Supports different vessel types.',
       inputSchema: AssessMarineTripInputSchema,
     },
-    wrapTool('weather.assess_marine_trip_risk', async (args: unknown) => {
+    wrapTool('weather_assess_marine_trip_risk', async (args: unknown) => {
       const input = AssessMarineTripInputSchema.parse(args);
       return handleAssessMarineTrip(input, proxyClient);
     })
@@ -311,19 +311,19 @@ export function createMcpServer(config: ServerConfig): McpServer {
   // Register places tool and resources (Phase 7)
   if (placesDB) {
     server.registerTool(
-      'places.resolve_name',
+      'places_resolve_name',
       {
         description:
           'Resolve Norwegian place names to geographic coordinates using Kartverket Stedsnavn (official place names register). Returns ranked matches with confidence scores. Use this before weather tools when user provides a Norwegian place name instead of coordinates.',
         inputSchema: PlaceResolveInputSchema,
       },
-      wrapTool('places.resolve_name', async (args: unknown) => {
+      wrapTool('places_resolve_name', async (args: unknown) => {
         const input = PlaceResolveInputSchema.parse(args);
         return handlePlaceResolve(input, placesDB!);
       })
     );
 
-    logger.debug('Registered places.resolve_name tool');
+    logger.debug('Registered places_resolve_name tool');
 
     server.registerResource(
       PLACES_LICENSE_NAME,
@@ -349,7 +349,7 @@ export function createMcpServer(config: ServerConfig): McpServer {
 
     logger.debug('Registered gazetteer info resource', { uri: GAZETTEER_INFO_URI });
   } else {
-    logger.info('Skipping places.resolve_name tool registration (database not available)');
+    logger.info('Skipping places_resolve_name tool registration (database not available)');
   }
 
   // Register prompts

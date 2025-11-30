@@ -505,18 +505,47 @@ Example alerts:
 - Proxy unavailable
 - Memory usage high (>80%)
 
-### Updates & Rollbacks
+### Updating an Existing Deployment
+
+When a new version is released, update your deployment:
+
+**Docker Compose (recommended):**
+```bash
+# 1. Pull latest code
+git pull origin main
+
+# 2. Stop services
+docker compose down
+
+# 3. Rebuild with new code
+docker compose build vaer
+
+# 4. Start services
+docker compose up -d
+
+# 5. Verify deployment
+docker compose ps
+curl http://localhost:3000/health
+```
+
+**Quick one-liner:**
+```bash
+git pull origin main && docker compose down && docker compose build vaer && docker compose up -d
+```
+
+### Rollbacks
+
+If you encounter issues after an update:
 
 **Docker Compose:**
 ```bash
-# Update images
-docker compose pull
+# Check out previous version
+git checkout v1.0.1  # or desired version tag
 
-# Rolling restart
-docker compose up -d --no-deps --build vaer
-
-# Rollback (if issues)
-docker compose up -d --no-deps vaer:previous-tag
+# Rebuild and restart
+docker compose down
+docker compose build vaer
+docker compose up -d
 ```
 
 **Kubernetes:**

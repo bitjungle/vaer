@@ -27,7 +27,7 @@ function getExamples(language: string): ToolExample[] {
 
   return [
     {
-      tool: 'weather.get_location_forecast',
+      tool: 'weather_get_location_forecast',
       description: isEnglish
         ? 'Get 24-hour forecast for Oslo, Norway'
         : 'Get 24-hour forecast for Oslo, Norway',
@@ -55,7 +55,7 @@ function getExamples(language: string): ToolExample[] {
           ],
     },
     {
-      tool: 'weather.get_nowcast',
+      tool: 'weather_get_nowcast',
       description: isEnglish
         ? 'Check if it will rain in the next 2 hours in Stockholm'
         : 'Check if it will rain in the next 2 hours in Stockholm',
@@ -78,7 +78,7 @@ function getExamples(language: string): ToolExample[] {
           ],
     },
     {
-      tool: 'weather.get_air_quality',
+      tool: 'weather_get_air_quality',
       description: isEnglish
         ? 'Get air quality forecast for Bergen, Norway'
         : 'Get air quality forecast for Bergen, Norway',
@@ -101,7 +101,7 @@ function getExamples(language: string): ToolExample[] {
         : ['Only available for Norway locations'],
     },
     {
-      tool: 'weather.get_marine_conditions',
+      tool: 'weather_get_marine_conditions',
       description: isEnglish
         ? 'Get marine forecast for Oslo Fjord (kayaking)'
         : 'Get marine forecast for Oslo Fjord',
@@ -125,7 +125,7 @@ function getExamples(language: string): ToolExample[] {
         : ['Only available for Norwegian coastal waters'],
     },
     {
-      tool: 'weather.get_recent_observations',
+      tool: 'weather_get_recent_observations',
       description: isEnglish
         ? 'Get recent observations from Oslo-Blindern weather station'
         : 'Get recent observations from Oslo weather station',
@@ -146,7 +146,7 @@ function getExamples(language: string): ToolExample[] {
         : ['Requires Frost API credentials', 'Norwegian stations only'],
     },
     {
-      tool: 'weather.assess_outdoor_activity_window',
+      tool: 'weather_assess_outdoor_activity_window',
       description: isEnglish
         ? 'Find best times for running in Oslo over next 24 hours'
         : 'Find best times for running in Oslo',
@@ -170,7 +170,7 @@ function getExamples(language: string): ToolExample[] {
         : ['Multiple activity types supported'],
     },
     {
-      tool: 'weather.assess_marine_trip_risk',
+      tool: 'weather_assess_marine_trip_risk',
       description: isEnglish
         ? 'Assess risk for kayak trip from Oslo to Nesodden'
         : 'Assess marine trip risk',

@@ -26,7 +26,7 @@ const PRODUCTS: Product[] = [
     coverage: 'World',
     description:
       'Weather forecasts for any location on Earth. Provides hourly temperature, wind, precipitation, and conditions.',
-    tool: 'weather.get_location_forecast',
+    tool: 'weather_get_location_forecast',
     documentation: 'https://api.met.no/weatherapi/locationforecast/2.0/documentation',
   },
   {
@@ -35,7 +35,7 @@ const PRODUCTS: Product[] = [
     coverage: 'Nordic region',
     description:
       'Short-term (2-hour) precipitation forecasts for Nordic countries. Optimized for "will it rain soon?" queries.',
-    tool: 'weather.get_nowcast',
+    tool: 'weather_get_nowcast',
     documentation: 'https://api.met.no/weatherapi/nowcast/2.0/documentation',
   },
   {
@@ -44,7 +44,7 @@ const PRODUCTS: Product[] = [
     coverage: 'Norway',
     description:
       'Air quality forecasts for Norwegian locations. Provides AQI (Air Quality Index) and pollutant levels (PM2.5, PM10, NO2, O3).',
-    tool: 'weather.get_air_quality',
+    tool: 'weather_get_air_quality',
     documentation: 'https://api.met.no/weatherapi/airqualityforecast/0.1/documentation',
   },
   {
@@ -53,7 +53,7 @@ const PRODUCTS: Product[] = [
     coverage: 'Coastal Norway',
     description:
       'Marine weather conditions for Norwegian coastal waters. Includes wave height, water temperature, currents, and risk assessments.',
-    tool: 'weather.get_marine_conditions',
+    tool: 'weather_get_marine_conditions',
     documentation: 'https://api.met.no/weatherapi/oceanforecast/2.0/documentation',
   },
   {
@@ -62,7 +62,7 @@ const PRODUCTS: Product[] = [
     coverage: 'Norway and Svalbard',
     description:
       'Historical weather observations from Norwegian weather stations. Provides actual measured data for temperature, wind, precipitation, and more.',
-    tool: 'weather.get_recent_observations',
+    tool: 'weather_get_recent_observations',
     documentation: 'https://frost.met.no/index.html',
   },
 ];
