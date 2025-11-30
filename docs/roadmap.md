@@ -597,8 +597,8 @@ See `api/apis.json` for full catalog and endpoint details.
 
 ## References
 
-- **v1 Implementation History:** [docs/V1_HISTORY.md](V1_HISTORY.md)
-- **Design Specification:** [docs/DESIGN.md](DESIGN.md)
+- **v1 Implementation History:** [history.md](history.md)
+- **Design Specification:** [design.md](design.md)
 - **API Catalog:** [api/apis.json](../api/apis.json)
 - **MCP Specification:** https://modelcontextprotocol.io/docs
 - **MET Norway API Docs:** https://api.met.no/doc

@@ -167,4 +167,4 @@ https://docs.docker.com/engine/install/
 
 - [Docker Official Install Docs](https://docs.docker.com/engine/install/ubuntu/)
 - [Docker Compose Documentation](https://docs.docker.com/compose/)
-- [DEPLOYMENT.md](DEPLOYMENT.md) — Production deployment guide
+- [Getting Started](getting-started.md) — Production deployment guide

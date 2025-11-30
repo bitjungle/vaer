@@ -599,15 +599,16 @@ Once the full stack is running, you have:
 ## Next Steps
 
 - **Connect MCP Clients**: See `examples/client-configs/` for Claude Desktop, VS Code, etc.
-- **Production Deployment**: See [DEPLOYMENT.md](../DEPLOYMENT.md) for production setup
-- **Development**: See [CLAUDE.md](../CLAUDE.md) for development guidelines
-- **Architecture**: See [DESIGN.md](DESIGN.md) for detailed design specification
+- **Production Deployment**: See [Getting Started](getting-started.md) for production setup
+- **Architecture**: See [Design](design.md) for detailed design specification
+- **Regenerate Places Database**: See [ETL Pipeline](etl-pipeline.md) for developer-only ETL
 
 ## See Also
 
-- [README.md](../README.md) - Project overview
-- [DEPLOYMENT.md](../DEPLOYMENT.md) - Production deployment guide
-- [DESIGN.md](DESIGN.md) - Architecture and design specification
-- [V1_HISTORY.md](V1_HISTORY.md) - Implementation history and architectural decisions
-- [V2_ROADMAP.md](V2_ROADMAP.md) - Future roadmap and planned features
-- [Example Client Configs](../examples/client-configs/) - MCP client configurations
+- [README.md](../README.md) — Project overview
+- [Getting Started](getting-started.md) — Production deployment guide
+- [Design](design.md) — Architecture and design specification
+- [Observability](observability.md) — Metrics, logging, debugging
+- [History](history.md) — Implementation history and architectural decisions
+- [Roadmap](roadmap.md) — Future roadmap and planned features
+- [Example Client Configs](../examples/client-configs/) — MCP client configurations

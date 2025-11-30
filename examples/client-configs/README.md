@@ -171,7 +171,7 @@ You can run multiple instances of vaer (e.g., dev/prod):
 
 ## See Also
 
-- [Main README](../../README.md) - Project overview and architecture
-- [DEPLOYMENT.md](../../DEPLOYMENT.md) - Production deployment guide
-- [API Documentation](../../docs/DESIGN.md) - Tool schemas and API details
-- [MCP Specification](https://modelcontextprotocol.io/docs) - Official MCP docs
+- [Main README](../../README.md) — Project overview and architecture
+- [Getting Started](../../docs/getting-started.md) — Production deployment guide
+- [API Documentation](../../docs/design.md) — Tool schemas and API details
+- [MCP Specification](https://modelcontextprotocol.io/docs) — Official MCP docs

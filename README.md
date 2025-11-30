@@ -23,7 +23,7 @@ curl http://localhost:8080/healthz   # → ok
 curl http://localhost:3000/health    # → {"status":"ok","transport":"http"}
 ```
 
-That's it — you now have a running MCP server. See [docs/SETUP.md](docs/SETUP.md) for development setup and [DEPLOYMENT.md](DEPLOYMENT.md) for production.
+That's it — you now have a running MCP server. See [Documentation](#documentation) for next steps.
 
 ---
 
@@ -109,19 +109,16 @@ MCP Client (ChatGPT, IDE, custom app)
     * Sets a compliant `User-Agent`
     * Optionally enables caching & rate limiting
 
-* **Docker + Compose v2** (for Docker deployments and ETL)
+* **Docker + Compose v2** (for Docker deployments)
 
   * **macOS/Windows**: Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes everything)
-  * **Linux servers**: Install Docker CE from Docker's official repository — see **[README-docker-install.md](README-docker-install.md)** for step-by-step instructions
+  * **Linux servers**: Install Docker CE from Docker's official repository — see [docs/docker-linux.md](docs/docker-linux.md)
 
-  Ubuntu's default `docker.io` package lacks Compose v2 and Buildx. Use Docker's official repo for a complete installation.
+* **Places Database** (included)
 
-* **Places Database** (optional, for Norway place name resolution)
-
-  * Kartverket Stedsnavn PostGIS dump: `postgis/Basisdata_0000_Norge_25833_Stedsnavn_PostGIS.sql`
-  * ETL creates `data/places.db` (28,115 places, 6.09 MB)
-  * Server runs gracefully without places.db (tools disabled with warning)
-  * See `scripts/etl/README.md` for ETL setup instructions
+  * `data/places.db` (28,115 Norwegian places, 6.09 MB) is included in the repository
+  * No setup required — works out of the box after `git clone`
+  * Developers can regenerate from source — see [docs/etl-pipeline.md](docs/etl-pipeline.md)
 
 * **MCP Client**
 
@@ -202,43 +199,25 @@ The MCP server is configured via environment variables:
 
 ```text
 .
-├─ api/
-│   └─ apis.json              # MET API catalog
+├─ src/                       # TypeScript source code
+│  ├─ index.ts               # MCP server entry point
+│  ├─ tools/                 # 8 MCP tools (weather.* + places.*)
+│  ├─ resources/             # MCP resources
+│  ├─ prompts/               # MCP prompts
+│  ├─ domain/                # Shared utilities
+│  └─ places/                # Places module
+├─ data/
+│  └─ places.db              # Norwegian places database (included)
+├─ docs/                      # Documentation
+│  ├─ getting-started.md     # Deployment guide
+│  ├─ development.md         # Developer setup
+│  ├─ design.md              # Architecture & API specs
+│  └─ ...                    # See docs/README.md
 ├─ metno-proxy/               # Nginx reverse proxy
-│   ├─ Dockerfile
-│   ├─ Makefile
-│   ├─ nginx.conf
-│   └─ conf.d/
-│       └─ metno.conf
-├─ src/
-│  ├─ index.ts                # MCP server entry point
-│  ├─ config/                 # Configuration management
-│  ├─ transport/              # stdio + HTTP transports
-│  ├─ tools/                  # 7 MCP tools (weather.* + places.*)
-│  ├─ resources/              # MCP resources (license, products, units)
-│  ├─ prompts/                # 3 MCP prompts
-│  ├─ domain/                 # Shared utilities (HTTP, errors, caching)
-│  └─ places/                 # Places module (db, matcher, schemas)
-├─ scripts/
-│  └─ etl/                    # Places ETL pipeline (Docker-based)
-│      ├─ docker-compose.etl.yml
-│      ├─ Dockerfile.etl
-│      ├─ Dockerfile.postgis
-│      ├─ Makefile
-│      └─ scripts/            # Python ETL scripts
-├─ tests/                     # Integration tests
-├─ data/                      # Runtime data (places.db)
-├─ docs/
-│   ├─ DESIGN.md              # Complete design specification
-│   ├─ V1_HISTORY.md          # Implementation history
-│   ├─ V2_ROADMAP.md          # Future roadmap
-│   └─ SETUP.md               # Setup & development guide
+├─ scripts/etl/               # Places ETL (developer-only)
+├─ tests/                     # Test suites
 ├─ docker-compose.yml         # Full stack orchestration
-├─ Makefile
-├─ package.json
-├─ CLAUDE.md                  # AI assistant guidance
-├─ README-metno-proxy.md
-└─ README.md                  # This file
+└─ Makefile                   # Build commands
 ```
 
 ---
@@ -268,188 +247,26 @@ Both services should show as "healthy":
 - **metno-proxy**: `http://localhost:8080` (nginx proxy to api.met.no)
 - **vaer**: `http://localhost:3000` (MCP server with HTTP transport)
 
-**For detailed setup instructions, troubleshooting, and alternative configurations, see [docs/SETUP.md](docs/SETUP.md).**
+**For detailed setup instructions, see [docs/development.md](docs/development.md).**
 
-### Testing with MCP Inspector
-
-First, build the project:
+### Testing
 
 ```bash
+# Run all tests
+npm test
+
+# Unit tests only
+npm run test:unit
+
+# Integration tests (requires metno-proxy running)
+METNO_PROXY_BASE_URL=http://localhost:8080 npm run test:integration
+
+# Test with MCP Inspector
 npm run build
-```
-
-Then run the inspector:
-
-```bash
 METNO_PROXY_BASE_URL=http://localhost:8080 npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
-**Important**: Use `node dist/index.js` (not `npm run dev`) to avoid npm's output interfering with the MCP JSON-RPC protocol over stdio.
-
-### Testing HTTP Transport
-
-To test the HTTP transport:
-
-```bash
-# Start server with HTTP transport
-METNO_PROXY_BASE_URL=http://localhost:8080 VAER_PORT=3000 npm run dev
-
-# In another terminal, test health endpoint
-curl http://localhost:3000/health
-
-# Expected response: {"status":"ok","transport":"http"}
-```
-
-The HTTP transport:
-- Listens on configured port (e.g., 3000)
-- Exposes MCP protocol at `POST /mcp` endpoint
-- Provides health check at `GET /health` endpoint
-- Uses StreamableHTTPServerTransport (stateless mode)
-- Shares same tools/resources/prompts as stdio transport
-
-**Note**: Testing the full MCP protocol over HTTP requires a proper MCP client (like MCP Inspector in HTTP mode or the MCP SDK client).
-
-### Testing Proxy Integration
-
-To test the proxy integration layer:
-
-```bash
-METNO_PROXY_BASE_URL=http://localhost:8080 npx tsx tests/test-proxy-integration.ts
-```
-
-This validates:
-- Health check endpoint
-- Fetching data from MET API via proxy
-- Cache header parsing
-- Error handling
-
-### Testing Location Forecast Tool
-
-To test the location forecast tool:
-
-```bash
-METNO_PROXY_BASE_URL=http://localhost:8080 npx tsx tests/test-location-forecast.ts
-```
-
-This validates:
-- Basic forecast with defaults
-- Forecast with altitude and probabilistic data
-- Cache verification
-- API error handling
-
----
-
-## Automated Testing
-
-The project uses [Vitest](https://vitest.dev/) for automated testing with separate configurations for unit and integration tests.
-
-### Test Structure
-
-```
-tests/
-├── integration/           # Integration tests (require running services)
-│   ├── setup.ts          # Shared test setup and fixtures
-│   ├── proxy.integration.test.ts
-│   ├── server-startup.integration.test.ts
-│   ├── mcp-resources-prompts.integration.test.ts
-│   └── tools.integration.test.ts
-└── (unit tests in src/)  # Unit tests co-located with source
-```
-
-### Running Tests
-
-**All tests:**
-```bash
-npm test
-```
-
-**Unit tests only** (src/**/*.test.ts):
-```bash
-npm run test:unit
-```
-
-**Integration tests** (requires metno-proxy running):
-```bash
-METNO_PROXY_BASE_URL=http://localhost:8080 npm run test:integration
-```
-
-**Watch mode** (re-run on file changes):
-```bash
-npm run test:watch                    # All tests
-npm run test:integration:watch        # Integration tests only
-```
-
-**Coverage report:**
-```bash
-npm run test:coverage
-```
-
-### Integration Test Requirements
-
-Integration tests require:
-1. **metno-proxy running** at `http://localhost:8080`
-   ```bash
-   cd metno-proxy && make run
-   ```
-
-2. **(Optional) Frost API credentials** for observation tests:
-   ```bash
-   export FROST_CLIENT_ID="your-client-id"
-   ```
-
-3. **(Optional) Places database** for place name resolution tests:
-   - Run ETL pipeline first (see "Setting Up Places Module" below)
-
-### Test Coverage Thresholds
-
-The project enforces minimum 70% coverage for:
-- Lines
-- Functions
-- Branches
-- Statements
-
-Coverage excludes:
-- Test files
-- Configuration files
-- Entry point (src/index.ts)
-- Demo scripts
-
-### Known Test Limitations
-
-Some tests are currently skipped due to:
-- **MCP prompt argument type mismatch**: lat/lon parameter validation issue ([see test file](tests/integration/mcp-resources-prompts.integration.test.ts))
-- **API availability**: Nowcast and marine endpoints may not be fully configured
-- **Response structure changes**: Some tool response formats need verification
-
-See inline `it.skip()` and `describe.skip()` blocks with TODO comments for details.
-
----
-
-### Setting Up Places Module (Optional)
-
-The places module requires a one-time ETL run to create the local database:
-
-```bash
-cd scripts/etl
-
-# Build Docker images (first time only)
-docker compose -f docker-compose.etl.yml build
-
-# Run ETL pipeline (~2 seconds)
-docker compose -f docker-compose.etl.yml up
-
-# Verify output
-ls -lh ../../data/places.db  # Should show ~6 MB
-sqlite3 ../../data/places.db "SELECT COUNT(*) FROM places;"  # Should show 28115
-```
-
-Test the places integration:
-
-```bash
-npx tsx tests/test-places-integration.ts
-```
-
-**Note**: The server runs gracefully without `places.db` - places tools are simply disabled with a warning log.
+For detailed testing instructions, see [docs/development.md](docs/development.md).
 
 ---
 
@@ -548,13 +365,29 @@ See [`examples/client-configs/`](examples/client-configs/) for more configuratio
 
 ### Production Deployment
 
-For production deployments, see:
-- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Comprehensive deployment guide
-  - Docker Compose production configuration
-  - Kubernetes manifests
-  - Security considerations
-  - Monitoring & operations
-  - Troubleshooting
+For production deployments, see [docs/getting-started.md](docs/getting-started.md):
+- Docker Compose production configuration
+- Kubernetes manifests
+- Security considerations
+- Monitoring & operations
+
+---
+
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](docs/getting-started.md) | Production deployment guide |
+| [Development](docs/development.md) | Local setup, testing, contributing |
+| [Design](docs/design.md) | Architecture, API schemas, tool specifications |
+| [Docker on Linux](docs/docker-linux.md) | Installing Docker CE on Ubuntu/Debian |
+| [Metno Proxy](docs/metno-proxy.md) | Nginx proxy configuration |
+| [Observability](docs/observability.md) | Metrics, logging, debugging |
+| [ETL Pipeline](docs/etl-pipeline.md) | Regenerating places.db (developer-only) |
+| [History](docs/history.md) | Implementation history |
+| [Roadmap](docs/roadmap.md) | Future plans |
+
+See [docs/README.md](docs/README.md) for the complete documentation index.
 
 ---
 

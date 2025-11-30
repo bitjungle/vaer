@@ -169,27 +169,22 @@ The Vær system consists of two services:
 ### Quick Start
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/your-org/vaer.git
+# 1. Clone repository (includes places.db)
+git clone https://github.com/bitjungle/vaer.git
 cd vaer
 
-# 2. (Optional) Run ETL for places database
-cd scripts/etl
-docker compose -f docker-compose.etl.yml up
-cd ../..
-
-# 3. Configure environment
+# 2. Configure environment
 cat > .env <<EOF
 METNO_USER_AGENT=my-service/1.0 ops@example.com
 FROST_CLIENT_ID=your-frost-id-optional
 VAER_LOG_LEVEL=info
 EOF
 
-# 4. Build and start services
+# 3. Build and start services
 make compose-build
 make up
 
-# 5. Verify deployment
+# 4. Verify deployment
 curl http://localhost:8080/healthz
 docker compose ps
 docker compose logs vaer
@@ -557,11 +552,11 @@ kubectl rollout undo deployment/vaer
 **2. "PlacesDB not available" (Warning)**
 - **Cause**: places.db not found in data/ directory
 - **Impact**: Place name resolution disabled (tools still work with coordinates)
-- **Fix** (optional):
+- **Note**: places.db is included in the repository. If missing, ensure you have the latest code:
   ```bash
-  cd scripts/etl
-  docker compose -f docker-compose.etl.yml up
+  git pull origin main
   ```
+- **Developer option**: Regenerate from source — see [etl-pipeline.md](etl-pipeline.md)
 
 **3. High Memory Usage**
 - **Cause**: Memory leak or many concurrent requests

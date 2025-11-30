@@ -572,13 +572,13 @@ The Vær Server v1 was implemented over 11 phases, delivering a production-ready
 
 ## References
 
-- **Design Specification:** [docs/DESIGN.md](DESIGN.md)
-- **Future Roadmap:** [docs/V2_ROADMAP.md](V2_ROADMAP.md)
-- **Deployment Guide:** [DEPLOYMENT.md](../DEPLOYMENT.md)
-- **Setup Guide:** [docs/SETUP.md](SETUP.md)
+- **Design Specification:** [design.md](design.md)
+- **Future Roadmap:** [roadmap.md](roadmap.md)
+- **Deployment Guide:** [getting-started.md](getting-started.md)
+- **Development Guide:** [development.md](development.md)
+- **ETL Pipeline:** [etl-pipeline.md](etl-pipeline.md)
 - **API Catalog:** [api/apis.json](../api/apis.json)
-- **ETL Pipeline:** [scripts/etl/README.md](../scripts/etl/README.md)
 
 ---
 
-*This implementation history documents the development of Vær Server v1 from initial bootstrap through production-ready deployment. For planned future enhancements, see [V2_ROADMAP.md](V2_ROADMAP.md).*
+*This implementation history documents the development of Vær Server v1 from initial bootstrap through production-ready deployment. For planned future enhancements, see [roadmap.md](roadmap.md).*
