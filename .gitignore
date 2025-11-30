@@ -46,3 +46,6 @@ data/*.csv
 
 # Large PostGIS SQL dumps (users must download separately)
 postgis/*.sql
+
+# Docker Compose override file (for local development customizations)
+docker-compose.override.yml

@@ -550,8 +550,15 @@ kubectl rollout undo deployment/vaer
   ```
 
 **2. "PlacesDB not available" (Warning)**
-- **Cause**: places.db not found in data/ directory
+- **Cause**: places.db not found or not readable
 - **Impact**: Place name resolution disabled (tools still work with coordinates)
+- **Docker deployment**: places.db is baked into the Docker image during build. No volume mount needed.
+  - If you previously used a volume mount (`./data:/app/data:ro`), remove it and rebuild:
+    ```bash
+    docker compose down
+    docker compose build vaer
+    docker compose up -d
+    ```
 - **Note**: places.db is included in the repository. If missing, ensure you have the latest code:
   ```bash
   git pull origin main

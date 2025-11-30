@@ -13,6 +13,7 @@ This server is designed to be used by MCP-compatible clients (e.g. AI assistants
 ```bash
 # Clone the repository
 git clone git@github.com:bitjungle/vaer.git
+# git clone https://github.com/bitjungle/vaer.git
 cd vaer
 
 # Start the stack (requires Docker)
@@ -321,9 +322,10 @@ docker run -d \
   --name vaer \
   -e METNO_PROXY_BASE_URL=http://metno-proxy:80 \
   -e VAER_LOG_LEVEL=info \
-  -v $(pwd)/data:/app/data:ro \
   vaer:latest
 ```
+
+**Note:** The places.db database is baked into the image during build. Do not mount `./data` as a volume — it causes permission issues.
 
 ### MCP Client Configuration
 

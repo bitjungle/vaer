@@ -22,11 +22,9 @@ This directory contains example configurations for connecting various MCP client
 
 3. **(Optional) Frost API Credentials**: Get from https://frost.met.no/auth/requestCredentials.html for weather observations.
 
-4. **(Optional) Places Database**: Run ETL pipeline for Norwegian place name resolution.
-   ```bash
-   cd scripts/etl
-   docker compose -f docker-compose.etl.yml up
-   ```
+4. **Places Database**: Included in the repository (`data/places.db`). No setup required.
+   - For Docker deployments, the database is baked into the image during build.
+   - Developers who need to regenerate it can see [ETL Pipeline](../../docs/etl-pipeline.md).
 
 ## Configuration Files
 
@@ -127,7 +125,8 @@ METNO_PROXY_BASE_URL=http://localhost:8080 npx @modelcontextprotocol/inspector n
 ### "PlacesDB not available"
 - This is a warning, not an error
 - The server works without places.db, but place name resolution is disabled
-- Run ETL pipeline to enable: `cd scripts/etl && docker compose -f docker-compose.etl.yml up`
+- places.db is included in the repository and baked into Docker images
+- If missing: `git pull origin main` to get the latest code
 
 ### "METNO_PROXY_BASE_URL environment variable is required"
 - Set the environment variable in your client config

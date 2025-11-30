@@ -64,9 +64,10 @@ services:
     ports:
       - "3000:3000"
 
-    # Mount places database if it exists
-    volumes:
-      - ./data:/app/data:ro
+    # Note: places.db is baked into the Docker image during build.
+    # Do NOT mount ./data as a volume - it overrides the image's data
+    # and causes permission issues (host UID vs container UID 1001).
+    # For development, create docker-compose.override.yml (gitignored).
 
     # Health check for HTTP transport
     healthcheck:
